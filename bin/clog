@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+$: << "/Users/magnus/programming/random/zoid/lib"
+$: << "/Users/magnus/programming/random/clog/lib"
+
+require 'clog'
+require 'clog/app'
+
+unless dir = ARGV[0]
+  puts "Directory required"
+  exit 1
+end
+
+app = Clog::App.new(:directory => dir)
+app.start(ARGV[1..-1])
+

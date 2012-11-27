@@ -1,0 +1,47 @@
+<ul class="crumb">
+  <% entry.parents.each do |e| %>
+    <li><a href="/<%= e.relative_path %>"><%= e.title %></a></li>
+  <% end %>
+  <li><%= entry.title %></li>
+</ul>
+
+<% if entry.main %>
+  <nav class="index aside">
+    <ul>
+      <% entry.main.parent.each_file do |file| %>
+        <li class="file">
+          <% if file == entry %>
+            <%= file.relative_path(entry.main.parent) %>
+          <% else %>
+            <a href="/<%= file.relative_path %>"><%= file.relative_path(entry.main.parent) %></a>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </nav>
+<% end %>
+
+<% if entry.directory? %>
+  <nav class="index">
+    <ul>
+      <% entry.files.each do |file| %>
+        <li class="<%= file.type %>">
+          <a href="/<%= file.relative_path %>"><%= file.title %></a>
+          <% if h = file.header %>
+            <p><%= h %></p>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </nav>
+<% else %>
+  <article>
+    <% case entry.file_type
+       when :markdown, :code %>
+       <%= entry.render %>
+    <% when :image %>
+      <img src="/raw/<%= entry.relative_path %>">
+    <% end %>
+  </article>
+<% end %>
+
